@@ -332,9 +332,9 @@ export default function App() {
     setFailedKeyAttempts(0);
     setIsLockedOut(false);
     if (method === 'biometric') {
-      showToast('¡Bienvenida, Camila! Identidad biométrica confirmada');
+      showToast('¡Bienvenido, Usuario! Identidad biométrica confirmada');
     } else {
-      showToast('¡Bienvenida, Camila! Autenticación exitosa con Clave Digital');
+      showToast('¡Bienvenido, Usuario! Autenticación exitosa con Clave Digital');
     }
   };
 

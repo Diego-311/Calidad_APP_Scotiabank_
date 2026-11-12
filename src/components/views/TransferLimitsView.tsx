@@ -60,7 +60,9 @@ export const TransferLimitsView: React.FC<TransferLimitsViewProps> = ({
     handleSaveLimitPersistence(5000);
     onQuickNotify('Límite reajustado a parámetro recomendado (S/ 5,000.00)');
   };
-
+  //--------------------------
+  
+  //----------------------------
   const percentUsed = Math.min(Math.round((limits.dailyConsumed / sliderVal) * 100), 100);
   const availableToday = Math.max(sliderVal - limits.dailyConsumed, 0);
 

@@ -103,6 +103,8 @@ const handleConfirmPlin = () => {
     onNavigate('plin-receipt');
   }, 1500);
 };
+//-------------------------------------------------------------------------------------
+
 //----------------------------------------------------------------------------
   return (
     <div className="flex-1 flex flex-col bg-[#fcf9f8] animate-in fade-in duration-200">
