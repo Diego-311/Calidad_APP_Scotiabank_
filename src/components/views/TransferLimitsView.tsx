@@ -32,6 +32,13 @@ export const TransferLimitsView: React.FC<TransferLimitsViewProps> = ({
     }
   };
 
+  // 🛠️ CORRECCIÓN: Persistencia centralizada del límite operativo para que las vistas de transferencia lo consulten
+  const handleSaveLimitPersistence = (newLimit: number) => {
+    localStorage.setItem('user_transfer_limit', newLimit.toString());
+    // También guardamos una marca de tiempo o estado si es necesario para el monitoreo en tiempo real
+    window.dispatchEvent(new Event('storage'));
+  };
+
   // HU039: Modificación de límites y restricción al superar S/ 10,000
   const handleSave = () => {
     if (sliderVal > 10000) {
@@ -40,23 +47,23 @@ export const TransferLimitsView: React.FC<TransferLimitsViewProps> = ({
       return;
     }
     setLimitError(null);
+    
+    // Guardamos el límite de forma persistente para las validaciones de transferencia
+    handleSaveLimitPersistence(sliderVal);
+    
     onRequestAuthToken(sliderVal);
   };
 
   const handleReset = () => {
     setSliderVal(5000);
     setLimitError(null);
+    handleSaveLimitPersistence(5000);
     onQuickNotify('Límite reajustado a parámetro recomendado (S/ 5,000.00)');
   };
 
   const percentUsed = Math.min(Math.round((limits.dailyConsumed / sliderVal) * 100), 100);
   const availableToday = Math.max(sliderVal - limits.dailyConsumed, 0);
-  //------------------------------------------------------
-  const handleSaveLimit = (newLimit: number) => {
-  // Guardamos el límite operativo en localStorage para persistencia
-  localStorage.setItem('user_transfer_limit', newLimit.toString());
-  onQuickNotify('Límite de transferencia actualizado correctamente');
-};
+
   return (
     <div className="flex flex-col w-full pb-24 px-4 pt-3">
       {/* Breadcrumb & Status */}
