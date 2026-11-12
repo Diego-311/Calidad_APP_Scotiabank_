@@ -162,7 +162,7 @@ export const TransferLimitsView: React.FC<TransferLimitsViewProps> = ({
               onClick={() => handleAmountInputChange(12000)}
               className="text-[#ec111a] text-[10px] font-mono font-bold hover:underline"
             >
-              Probar &gt; S/ 10,000 (HU039)
+              Probar &gt; S/ 10,000
             </button>
           </div>
           <div className="flex items-center justify-between">
