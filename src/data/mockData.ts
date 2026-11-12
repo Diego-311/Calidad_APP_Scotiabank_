@@ -269,7 +269,7 @@ export const RECIPIENT_AVATAR_URL = 'https://lh3.googleusercontent.com/aida-publ
 export const INITIAL_AUTHORIZED_DEVICES: AuthorizedDevice[] = [
   {
     id: 'dev-1',
-    alias: 'iPhone 14 Pro - Camila',
+    alias: 'iPhone 14 Pro - Usuario',
     model: 'Apple iPhone 14 Pro (A2890)',
     imei: '354829104829102',
     uuid: 'UUID-98A4-4B21-B780',
