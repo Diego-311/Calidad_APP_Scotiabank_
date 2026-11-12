@@ -9,10 +9,10 @@ export interface Account {
   availableLine?: number;
   currentDebt?: number;
   isPinned: boolean;
-  status: 'active' | 'paused' | 'bloqueada'; // Añadido 'bloqueada'
-  blocked?: boolean;                          // Añadido
-  blockedReason?: string;                     // Añadido
-  blockCode?: string;                         // Añadido
+  status: 'active' | 'paused' | 'bloqueada';
+  blocked?: boolean;
+  blockedReason?: string;
+  blockCode?: string;
 }
 
 export interface Transaction {

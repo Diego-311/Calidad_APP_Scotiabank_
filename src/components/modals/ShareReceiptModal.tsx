@@ -51,6 +51,7 @@ export const ShareReceiptModal: React.FC<ShareReceiptModalProps> = ({
       onClose();
     }, 800);
   };
+  //---------------------------------------------------------
   const handleDownloadPDF = () => {
   try {
     // Creamos un blob simulado con formato PDF / Texto estructurado del comprobante
@@ -73,6 +74,7 @@ export const ShareReceiptModal: React.FC<ShareReceiptModalProps> = ({
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent('Hola, te comparto el comprobante oficial de mi operación en Scotiabank Perú.')}`;
   window.open(whatsappUrl, '_blank');
 };
+//---------------------------------------------------
 };
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center animate-in fade-in duration-200">

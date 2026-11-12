@@ -51,6 +51,7 @@ export const TransferLimitsView: React.FC<TransferLimitsViewProps> = ({
 
   const percentUsed = Math.min(Math.round((limits.dailyConsumed / sliderVal) * 100), 100);
   const availableToday = Math.max(sliderVal - limits.dailyConsumed, 0);
+  //------------------------------------------------------
   const handleSaveLimit = (newLimit: number) => {
   // Guardamos el límite operativo en localStorage para persistencia
   localStorage.setItem('user_transfer_limit', newLimit.toString());
