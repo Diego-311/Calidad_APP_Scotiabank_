@@ -229,7 +229,7 @@ export const LoginBiometricView: React.FC<LoginBiometricViewProps> = ({
             onClick={() => onQuickNotify('Para cambiar de cliente, contáctate con soporte')}
             className="hover:underline hover:text-[#1b1b1c]"
           >
-            ¿No eres Camila?
+            ¿No eres Usuario?
           </button>
           <div className="flex items-center gap-1 font-mono">
             <span className="material-symbols-outlined text-[14px] text-[#ec111a]">call</span>
