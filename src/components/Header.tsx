@@ -104,16 +104,16 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </button>
 
-              {/* Perfil de Camila Torres */}
+              {/* Perfil del Usuario */}
               <button
-                aria-label="Perfil y Configuración de Camila Torres"
+                aria-label="Perfil y Configuración del Usuario"
                 onClick={onOpenProfile}
                 className="w-10 h-10 flex items-center justify-center rounded-full ring-2 ring-[#ec111a]/20 hover:ring-[#ec111a] transition-all ml-0.5 active:scale-95"
-                title="Perfil de Camila Morales"
+                title="Perfil del Usuario"
               >
                 <img
                   src={USER_AVATAR_URL}
-                  alt="Camila Morales"
+                  alt="Usuario"
                   className="w-8 h-8 rounded-full object-cover"
                 />
               </button>
