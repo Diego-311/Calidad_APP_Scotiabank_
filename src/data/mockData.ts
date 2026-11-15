@@ -260,7 +260,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   }
 ];
 
-export const SCOTIABANK_LOGO_URL = 'src/assets/Logo_Scotiabank.jpg';
+export const SCOTIABANK_LOGO_URL = '/src/assets/Logo_Scotiabank.jpg';
 
 export const USER_AVATAR_URL = 'src/assets/avatar.jpg';
 
