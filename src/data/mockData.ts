@@ -261,8 +261,8 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
 ];
 import logoScotiabank from '../assets/Logo_Scotiabank.jpg';
 export const SCOTIABANK_LOGO_URL = logoScotiabank;
-
-export const USER_AVATAR_URL = './src/assets/avatar.jpg';
+import avatarImg from '../assets/avatar.jpg';
+export const USER_AVATAR_URL = avatarImg;
 
 export const RECIPIENT_AVATAR_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwqMu4bZxtYMGA5ThiyXL6Dn3HwiEnyZCxk95089Uu-zs_4KTVx0gdaI_TgJxBFZ2WFjNJXafv0OKpeLnyuov1nx7sc8nC4VCj2Qolp-7oHRUza4wqcyzWjfNH55Qmhrl8hB9lPxO6U_tRaAo-nu_0a4llXCElSDqDbm3f7xZZl1oMI33mTBn4kVg_5kiYecEiVSImFRe6LDLOa0oVnrdE5zVmzJ9VVCM6h7C2t9U3cLlMnNDz2LX_';
 
