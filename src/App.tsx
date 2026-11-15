@@ -58,9 +58,7 @@ export default function App() {
   const [cardSettings, setCardSettings] = useState<CardSecuritySettings>(INITIAL_CARD_SECURITY);
   const [transferLimits, setTransferLimits] = useState<TransferLimitSettings>(INITIAL_TRANSFER_LIMITS);
   const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
-  // HU005 Authorized Devices state
   const [authorizedDevices, setAuthorizedDevices] = useState<AuthorizedDevice[]>(INITIAL_AUTHORIZED_DEVICES);
-  // HU010 Plin Contacts Directory state
   const [plinContacts] = useState<PlinContact[]>(INITIAL_PLIN_CONTACTS);
 
   // Active Transfer Details
@@ -92,7 +90,6 @@ export default function App() {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHelpCodeModalOpen, setIsHelpCodeModalOpen] = useState(false);
-  // HU004 Modal states
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const [isSessionExpiredOpen, setIsSessionExpiredOpen] = useState(false);
 
@@ -106,20 +103,10 @@ export default function App() {
     }, 2800);
   };
 
-  // HU013 Criterio 01: Productos fijados (hasta un máximo de 6 productos)
-  const handleTogglePinAccount = (accountId: string) => {
-    setAccounts((prev) => {
-      const target = prev.find((a) => a.id === accountId);
-      if (!target) return prev;
-      if (!target.isPinned) {
-        const pinnedTotal = prev.filter((a) => a.isPinned).length;
-        if (pinnedTotal >= 6) {
-          showToast('Solo puedes fijar un máximo de 6 productos en el Home');
-          return prev;
-        }
-      }
-      return prev.map((acc) => (acc.id === accountId ? { ...acc, isPinned: !acc.isPinned } : acc));
-    });
+  // HU013 Criterio 01: Guardado diferido de productos fijados tras presionar "Guardar Configuración"
+  const handleSaveCustomizedAccounts = (updatedAccounts: Account[]) => {
+    setAccounts(updatedAccounts);
+    showToast('¡Configuración de productos guardada con éxito!');
   };
 
   // HU017: Selección de cuenta para consulta de saldos y movimientos
@@ -141,7 +128,6 @@ export default function App() {
   };
 
   const handleTransferSuccess = () => {
-    // Deduct from origin account and create transaction
     setAccounts((prev) =>
       prev.map((acc) =>
         acc.id === activeTransfer.originAccount.id
@@ -163,8 +149,6 @@ export default function App() {
     };
 
     setTransactions((prev) => [newTx, ...prev]);
-
-    // Update daily limit consumed
     setTransferLimits((prev) => ({
       ...prev,
       dailyConsumed: prev.dailyConsumed + activeTransfer.amount
@@ -181,7 +165,6 @@ export default function App() {
   }) => {
     setActivePaidService(data);
 
-    // Deduct from account
     setAccounts((prev) =>
       prev.map((acc) =>
         acc.id === data.account.id
@@ -231,7 +214,6 @@ export default function App() {
     showToast(`¡Transferencia con Plin por S/ ${amount.toFixed(2)} enviada a ${recipientName}!`);
   };
 
-  // HU010 Plin contact transfer execution
   const handleSendPlinContactSuccess = (recipientName: string, amount: number, phone: string) => {
     setAccounts((prev) =>
       prev.map((acc) =>
@@ -257,7 +239,6 @@ export default function App() {
     showToast(`¡Transferencia Plin de S/ ${amount.toFixed(2)} enviada a ${recipientName} (${phone})!`);
   };
 
-  // HU032: Handler de Pago de Tarjeta de Crédito
   const handleCreditCardPaySuccess = (data: {
     cardName: string;
     cardNumber: string;
@@ -296,7 +277,6 @@ export default function App() {
     setTransactions((prev) => [newTx, ...prev]);
   };
 
-  // HU042: Handler de Bloqueo Preventivo Definitivo de Tarjeta
   const handleCardEmergencyBlockSuccess = (data: {
     cardId: string;
     cardName: string;
@@ -323,7 +303,6 @@ export default function App() {
   const [failedKeyAttempts, setFailedKeyAttempts] = useState<number>(0);
   const [isLockedOut, setIsLockedOut] = useState<boolean>(false);
   const [currentDigitalKey, setCurrentDigitalKey] = useState<string>('123456');
-  // HU006 Previous keys history (last 3 combinations) & modification date
   const [previousKeys, setPreviousKeys] = useState<string[]>(['849201', '720194', '938102']);
   const [lastPasswordChangeDate, setLastPasswordChangeDate] = useState<string>('15 Sep 2026');
 
@@ -355,7 +334,6 @@ export default function App() {
     currentView === 'recuperar-clave' ||
     currentView === 'vincular-dispositivo-login';
 
-  // HU005 Handlers for Authorized Devices
   const handleAddAuthorizedDevice = (device: AuthorizedDevice) => {
     setAuthorizedDevices((prev) => [device, ...prev]);
   };
@@ -370,7 +348,6 @@ export default function App() {
     showToast(`¡Bienvenida, Camila! Dispositivo "${device.alias}" autorizado.`);
   };
 
-  // HU004 Session destruction & memory cleanup
   const handleDestroySession = useCallback(() => {
     setActiveTransfer({
       originAccount: INITIAL_ACCOUNTS[0],
@@ -400,7 +377,6 @@ export default function App() {
     setIsLogoutConfirmOpen(false);
   }, []);
 
-  // HU004 Criterio 01: Voluntary manual logout
   const handleManualLogoutConfirm = () => {
     handleDestroySession();
     closeAllModals();
@@ -408,7 +384,6 @@ export default function App() {
     showToast('Sesión finalizada con éxito. Memoria temporal liberada.');
   };
 
-  // HU006 Criterio 01: Preventive password update
   const handlePreventivePasswordChangeSuccess = (newKey: string) => {
     setPreviousKeys((prev) => [currentDigitalKey, ...prev.slice(0, 2)]);
     setCurrentDigitalKey(newKey);
@@ -419,7 +394,6 @@ export default function App() {
     showToast('Clave Digital actualizada con éxito. Inicia sesión con tu nueva clave.');
   };
 
-  // HU004 Criterio 02: Inactivity timeout (3 minutes continuous without interaction)
   useEffect(() => {
     if (isAuthView) return;
 
@@ -432,7 +406,7 @@ export default function App() {
         closeAllModals();
         setCurrentView('login-biometric');
         setIsSessionExpiredOpen(true);
-      }, 180 * 1000); // 3 continuous minutes (180s)
+      }, 180 * 1000);
     };
 
     const interactionEvents = [
@@ -450,10 +424,8 @@ export default function App() {
       window.addEventListener(event, resetInactivityTimer, { passive: true });
     });
 
-    // Start timer upon entering session
     resetInactivityTimer();
 
-    // Dev & test grading utility: callable via window.simulateInactivityTimeout()
     (window as any).simulateInactivityTimeout = () => {
       clearTimeout(inactivityTimer);
       handleDestroySession();
@@ -475,9 +447,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#fcf9f8] flex flex-col justify-between selection:bg-[#ec111a] selection:text-white">
-      {/* Container wrapper ensuring standard mobile banking aspect ratio while responsive */}
       <div className="w-full max-w-md mx-auto min-h-screen bg-[#fcf9f8] flex flex-col relative shadow-xl border-x border-[#e5e7eb]">
-        {/* Header (se oculta en pantallas de Login para máxima fidelidad) */}
         {!isAuthView && (
           <Header
             currentView={currentView}
@@ -488,7 +458,6 @@ export default function App() {
           />
         )}
 
-        {/* Main Dynamic View Content */}
         <main className="flex-1 flex flex-col">
           {currentView === 'login-biometric' && (
             <LoginBiometricView
@@ -718,10 +687,8 @@ export default function App() {
           )}
         </main>
 
-        {/* Bottom Navigation Bar (solo para sesión autenticada) */}
         {!isAuthView && <BottomNav currentView={currentView} onNavigate={setCurrentView} />}
 
-        {/* Modals & Submenus */}
         <CardPowerOffModal
           isOpen={isPowerOffModalOpen}
           onClose={() => setIsPowerOffModalOpen(false)}
@@ -752,12 +719,12 @@ export default function App() {
           oldLimit={transferLimits.maxLimit}
         />
 
+        {/* Modal de Personalización conectado con guardado diferido */}
         <CustomizeHomeModal
           isOpen={isCustomizeModalOpen}
           onClose={() => setIsCustomizeModalOpen(false)}
           accounts={accounts}
-          onTogglePin={handleTogglePinAccount}
-          onSave={() => showToast('Productos fijados en el inicio actualizados')}
+          onSave={handleSaveCustomizedAccounts}
         />
 
         <QrScannerModal
@@ -794,7 +761,6 @@ export default function App() {
           onClose={() => setIsHelpCodeModalOpen(false)}
         />
 
-        {/* HU004 Modals: Cierre de Sesión Manual y Cierre por Inactividad */}
         <LogoutConfirmModal
           isOpen={isLogoutConfirmOpen}
           onClose={() => setIsLogoutConfirmOpen(false)}
@@ -806,7 +772,6 @@ export default function App() {
           onClose={() => setIsSessionExpiredOpen(false)}
         />
 
-        {/* Toast Alerts */}
         <Toast message={toastMessage} />
       </div>
     </div>
